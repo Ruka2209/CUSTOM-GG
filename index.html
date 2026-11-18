@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CUSTOM.GG | LoL Custom Manager</title>
+<style>
+:root{--bg:#0b0e14;--panel:#141923;--panel2:#1b2330;--line:#293344;--text:#edf2fa;--muted:#91a0b5;--blue:#3679d8;--red:#c94d60;--green:#32b887;--gold:#e3b45d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 Inter,"Noto Sans JP",system-ui,sans-serif}
+button,input,select{font:inherit}button{cursor:pointer;border:0;border-radius:9px;padding:10px 14px;font-weight:700;background:var(--blue);color:white}button.secondary{background:#283344;color:#dce6f4}button.danger{background:#512b35;color:#ffc4cc}button:disabled{opacity:.4;cursor:not-allowed}
+header{height:66px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 max(22px,calc((100vw - 1180px)/2));background:#10151e;position:sticky;top:0;z-index:5}
+.brand{font-weight:900;letter-spacing:1.5px;font-size:21px}.brand span{color:#65a5ff}.subbrand{font-size:10px;color:var(--muted);letter-spacing:1.4px}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 22px 60px}.hero{display:flex;justify-content:space-between;align-items:end;margin-bottom:24px;gap:20px}.eyebrow{color:#71aaff;font-size:11px;font-weight:800;letter-spacing:2px}.hero h1{font-size:30px;margin:5px 0}.hero p{margin:0;color:var(--muted)}
+.status{border:1px solid #315d4f;background:#132a25;color:#7fe0bb;border-radius:20px;padding:6px 11px;font-size:11px;font-weight:800}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}.stat,.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px}.stat{padding:15px 18px}.stat strong{font-size:24px;display:block}.stat small{color:var(--muted)}
+.tabs{display:flex;gap:8px;border-bottom:1px solid var(--line);margin-bottom:18px}.tab{background:transparent;color:var(--muted);border-radius:8px 8px 0 0;padding:12px 16px}.tab.active{color:white;background:#1b2738;border-bottom:2px solid #64a3ff}
+.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}.panel{padding:18px}.panel h2{font-size:16px;margin:0 0 4px}.hint{color:var(--muted);font-size:12px;margin:0 0 16px}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{display:flex;flex-direction:column;gap:5px}.field.full{grid-column:1/-1}label{font-size:11px;color:#aebbd0;font-weight:700}input,select{width:100%;background:#0e141e;border:1px solid #344155;color:var(--text);border-radius:8px;padding:10px 11px;outline:none}input:focus,select:focus{border-color:#5c9af0}
+.role-table{width:100%;border-collapse:collapse;font-size:11px;margin-top:6px}.role-table th,.role-table td{padding:7px 5px;border-bottom:1px solid var(--line);text-align:left}.role-table th{color:var(--muted);font-weight:700}.role-table input,.role-table select{min-width:58px;padding:7px 6px;font-size:11px}.role-table .role-name{font-weight:900;color:#b8d6ff}.role-summary{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}.role-chip{font-size:10px;background:#202e40;border:1px solid #344a64;padding:4px 7px;border-radius:6px}.role-table-wrap{overflow-x:auto}.rolechecks{display:flex;gap:7px;flex-wrap:wrap}.rolechecks label{background:#202b3b;border:1px solid #35445a;padding:7px 9px;border-radius:7px;display:flex;gap:6px;align-items:center}.rolechecks input{width:auto;margin:0;accent-color:#5c9af0}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.playerlist{display:flex;flex-direction:column;gap:8px}.player{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;background:#101722;border:1px solid #283448;padding:10px;border-radius:10px}.pname{font-weight:800}.pmeta{font-size:11px;color:var(--muted)}.pill{font-size:10px;border-radius:20px;padding:4px 8px;background:#25354c;color:#a9ceff;font-weight:800}.pill.gold{background:#41371f;color:#f2d18b}.empty{padding:28px;text-align:center;color:var(--muted);border:1px dashed #39475b;border-radius:10px}
+.teamgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.team{border:1px solid var(--line);border-radius:13px;overflow:hidden;background:#111823}.teamhead{padding:13px 15px;display:flex;justify-content:space-between;align-items:center;font-weight:900;letter-spacing:.8px}.blue .teamhead{background:#1b3557;color:#a9d0ff}.red .teamhead{background:#4a2732;color:#ffb5c0}.teambody{padding:10px;display:flex;flex-direction:column;gap:7px}.slot{display:grid;grid-template-columns:58px 1fr auto;align-items:center;gap:8px;background:#1a2330;padding:9px;border-radius:8px}.slot select{padding:6px;font-size:11px}.slotrole{font-size:10px;color:var(--muted);font-weight:900}.slotname{font-weight:800}.score{padding:12px 15px;border-top:1px solid var(--line);display:flex;justify-content:space-between;color:var(--muted);font-size:12px}.score strong{color:white}
+.compare{margin-top:15px;background:#111823;border:1px solid var(--line);padding:14px;border-radius:10px}.bar{height:9px;background:#273344;border-radius:20px;overflow:hidden;margin:9px 0}.bar span{display:block;height:100%;background:linear-gradient(90deg,#397bd7,#67b3ff);width:50%}
+.note{font-size:11px;color:var(--muted);margin-top:14px}.hidden{display:none!important}.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#e9f5ff;color:#13243a;padding:10px 16px;border-radius:10px;font-weight:800;opacity:0;transition:.2s;z-index:10}.toast.show{opacity:1}
+footer{border-top:1px solid var(--line);color:#66758a;text-align:center;padding:20px;font-size:11px}
+@media(max-width:800px){.grid{grid-template-columns:1fr}.hero{align-items:start;flex-direction:column}.stats{grid-template-columns:1fr 1fr}.teamgrid{grid-template-columns:1fr}.player{grid-template-columns:1fr auto}.player .pill{grid-column:1}.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}}
+</style>
+</head>
+<body>
+<header><div><div class="brand">CUSTOM<span>.GG</span></div><div class="subbrand">LEAGUE OF LEGENDS CUSTOM MANAGER</div></div><div class="status">● LOCAL PROTOTYPE</div></header>
+<main class="wrap">
+<section class="hero"><div><div class="eyebrow">CUSTOM MATCH / TEAM BUILDER</div><h1>カスタムチーム管理</h1><p>10人の情報を登録して、実力とロールを考慮した5対5を編成。</p></div><button class="secondary" id="resetDemo">サンプルデータを読み込む</button></section>
+<div class="stats"><div class="stat"><strong id="playerCount">0 / 10</strong><small>登録プレイヤー</small></div><div class="stat"><strong id="avgRank">—</strong><small>平均ランク目安</small></div><div class="stat"><strong id="matchCount">0</strong><small>編成実行回数</small></div></div>
+<nav class="tabs"><button class="tab active" data-tab="players">プレイヤー管理</button><button class="tab" data-tab="builder">チーム編成</button></nav>
+<section id="playersTab">
+<div class="grid">
+<div class="panel"><h2>プレイヤーを登録</h2><p class="hint">Riot ID・ランク・得意ロールを登録。API連携前でも手動で利用できます。</p>
+<form id="playerForm"><input type="hidden" id="editId"><div class="formgrid">
+<div class="field"><label>プレイヤー名 *</label><input id="name" placeholder="例：Summoner" required maxlength="24"></div>
+<div class="field"><label>Riot ID（任意）</label><input id="riotId" placeholder="GameName#JP1"></div>
+<div class="field"><label>ランク *</label><select id="rank"><option value="iron">Iron</option><option value="bronze">Bronze</option><option value="silver" selected>Silver</option><option value="gold">Gold</option><option value="platinum">Platinum</option><option value="emerald">Emerald</option><option value="diamond">Diamond</option><option value="master">Master</option><option value="grandmaster">Grandmaster</option><option value="challenger">Challenger</option></select></div>
+<div class="field"><label>ディビジョン</label><select id="division"><option>I</option><option>II</option><option selected>III</option><option>IV</option><option>—</option></select></div>
+<div class="field full"><label>得意ロール（複数選択可） *</label><div class="rolechecks" id="mainRoles"></div></div>
+<div class="field full"><label>希望ロール順位（今回のカスタム）</label><select id="preferred"><option value="TOP">TOP</option><option value="JUNGLE">JUNGLE</option><option value="MID" selected>MID</option><option value="ADC">ADC</option><option value="SUPPORT">SUPPORT</option><option value="FILL">FILL（どこでも）</option></select></div>
+<div class="field full"><label>ロール別成績（任意・入力したロールほど予想精度が上がります）</label>
+<p class="hint" style="margin:0">試合数・勝率・KDA・CS/分・視界スコア・練度を入力。予想ランクと内部レートは自動計算します。</p>
+<div class="role-table-wrap"><table class="role-table"><thead><tr><th>ロール</th><th>試合数</th><th>勝率%</th><th>KDA</th><th>CS/分</th><th>視界</th><th>練度</th></tr></thead><tbody id="roleStatsRows"></tbody></table></div>
+</div>
+</div><div class="actions"><button type="submit" id="saveBtn">プレイヤーを追加</button><button type="button" class="secondary" id="cancelEdit">入力クリア</button></div></form>
+<p class="note">※現在はローカル保存の試作版です。Riot APIの自動取得・アカウント認証は未接続です。</p></div>
+<div class="panel"><h2>参加プレイヤー <span id="listCount" class="pill">0 / 10</span></h2><p class="hint">編集・削除ができます。10人登録するとチーム編成できます。</p><div class="playerlist" id="playerList"></div></div>
+</div></section>
+<section id="builderTab" class="hidden">
+<div class="panel" style="margin-bottom:15px"><div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap"><div><h2>自動チーム編成</h2><p class="hint" style="margin:4px 0 0">各ロールの予想ランク（表示）と内部レート（編成計算）を使い、希望ロール・練度も考慮します。</p></div><button id="generate">最適チームを編成</button></div>
+<div class="formgrid" style="margin-top:15px"><div class="field"><label>編成方針</label><select id="mode"><option value="balanced">実力・ロール両方（おすすめ）</option><option value="rank">実力バランス重視</option><option value="role">ロール適性重視</option></select></div><div class="field"><label>ロール割り当て</label><select id="roleMode"><option value="auto">自動でロールを割り当てる</option><option value="preferred">第一希望を優先する</option></select></div></div></div>
+<div id="teams" class="teamgrid"><div class="empty" style="grid-column:1/-1">プレイヤーを10人登録して「最適チームを編成」を押してください。</div></div>
+<div id="comparison" class="compare hidden"></div>
+<div class="actions"><button class="secondary" id="reshuffle">別パターンを作る</button><button class="secondary" id="copyResult">編成結果をコピー</button><button class="secondary" id="saveResult">編成を履歴に保存</button></div>
+<p class="note">予想ランクは入力された成績から算出する試作指標です。Riot公式の実ランクやOP.GGの公式予想値ではありません。成績未入力のロールは全体ランクを基準に暫定評価します。</p>
+</section>
+</main><footer>CUSTOM.GG · Fan-made custom match helper · Not affiliated with Riot Games</footer><div class="toast" id="toast"></div>
+<script>
+const ROLES=["TOP","JUNGLE","MID","ADC","SUPPORT"];
+const RANKS={iron:0,bronze:1,silver:2,gold:3,platinum:4,emerald:5,diamond:6,master:7,grandmaster:8,challenger:9};
+const TIERS=["Iron","Bronze","Silver","Gold","Platinum","Emerald","Diamond","Master","Grandmaster","Challenger"];
+const TIER_KEYS=["iron","bronze","silver","gold","platinum","emerald","diamond","master","grandmaster","challenger"];
+const $=id=>document.getElementById(id);
+let players=JSON.parse(localStorage.getItem("customgg_players")||"[]"), result=null;
+let runs=Number(localStorage.getItem("customgg_runs")||0), history=JSON.parse(localStorage.getItem("customgg_history")||"[]");
+const baseMMR=p=>400+RANKS[p.rank]*400+(p.division==="I"?300:p.division==="II"?200:p.division==="III"?100:0);
+const emptyStats=()=>({games:0,win:50,kda:3,cs:6,vision:20,proficiency:3});
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function toast(s){const t=$("toast");t.textContent=s;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1900)}
+function rolesUI(){$("mainRoles").innerHTML=ROLES.map(r=>`<label><input type="checkbox" value="${r}">${r}</label>`).join("");$("roleStatsRows").innerHTML=ROLES.map(r=>`<tr><td class="role-name">${r}</td><td><input type="number" min="0" max="500" id="st_${r}_games" value="0"></td><td><input type="number" min="0" max="100" step=".1" id="st_${r}_win" value="50"></td><td><input type="number" min="0" max="20" step=".1" id="st_${r}_kda" value="3"></td><td><input type="number" min="0" max="15" step=".1" id="st_${r}_cs" value="6"></td><td><input type="number" min="0" max="100" step=".1" id="st_${r}_vision" value="20"></td><td><select id="st_${r}_prof"><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option></select></td></tr>`).join("")}
+function readStats(){let o={};ROLES.forEach(r=>o[r]={games:+$(`st_${r}_games`).value||0,win:+$(`st_${r}_win`).value||50,kda:+$(`st_${r}_kda`).value||0,cs:+$(`st_${r}_cs`).value||0,vision:+$(`st_${r}_vision`).value||0,proficiency:+$(`st_${r}_prof`).value||3});return o}
+function setStats(stats={}){ROLES.forEach(r=>{let x={...emptyStats(),...(stats[r]||{})};$(`st_${r}_games`).value=x.games;$(`st_${r}_win`).value=x.win;$(`st_${r}_kda`).value=x.kda;$(`st_${r}_cs`).value=x.cs;$(`st_${r}_vision`).value=x.vision;$(`st_${r}_prof`).value=x.proficiency})}
+function save(){localStorage.setItem("customgg_players",JSON.stringify(players));render()}
+function formReset(){$("playerForm").reset();$("editId").value="";$("saveBtn").textContent="プレイヤーを追加";$("rank").value="silver";$("division").value="III";$("preferred").value="MID";document.querySelectorAll("#mainRoles input").forEach(x=>x.checked=false);setStats()}
+function roleMMR(p,r){
+ const st={...emptyStats(),...((p.roleStats||{})[r]||{})};
+ const games=Math.max(0,st.games||0), confidence=Math.min(1,games/20);
+ // Performance adjustment is deliberately capped; small samples have little influence.
+ const csTarget={TOP:6.5,JUNGLE:5.5,MID:7,ADC:8,SUPPORT:1.5}[r];
+ const visionTarget={TOP:20,JUNGLE:30,MID:22,ADC:18,SUPPORT:65}[r];
+ const perf=(st.win-50)*9+(st.kda-3)*22+(st.cs-csTarget)*13+(st.vision-visionTarget)*.65+(st.proficiency-3)*28;
+ const adjustment=Math.max(-350,Math.min(350,perf))*confidence;
+ const roleBonus=(p.mainRoles||[]).includes(r)?35:0;
+ return Math.round(baseMMR(p)+adjustment+roleBonus);
+}
+function rankLabel(mmr){
+ let tier=Math.max(0,Math.min(9,Math.floor((mmr-400)/400)));
+ if(tier>=7)return TIERS[tier];
+ let within=(mmr-400-tier*400);
+ let div=within>=300?"I":within>=200?"II":within>=100?"III":"IV";
+ return TIERS[tier]+" "+div;
+}
+function proficiencyLabel(n){return ["","★☆☆☆☆","★★☆☆☆","★★★☆☆","★★★★☆","★★★★★"][Math.max(1,Math.min(5,n||3))]}
+function roleHasData(p,r){return (p.roleStats?.[r]?.games||0)>0}
+function render(){
+ $("playerCount").textContent=`${players.length} / 10`;$("listCount").textContent=`${players.length} / 10`;$("matchCount").textContent=runs;
+ const avg=players.length?players.reduce((a,p)=>a+baseMMR(p),0)/players.length:0;
+ $("avgRank").textContent=players.length?rankLabel(avg):"—";
+ $("playerList").innerHTML=players.length?players.map(p=>`<div class="player"><div><div class="pname">${esc(p.name)}</div><div class="pmeta">${esc(p.riotId||"Riot ID未登録")} · 希望 ${esc(p.preferred)}</div><div class="role-summary">${ROLES.filter(r=>roleHasData(p,r)).map(r=>`<span class="role-chip">${r}: ${rankLabel(roleMMR(p,r))}</span>`).join("")||'<span class="pmeta">ロール別成績未入力</span>'}</div></div><span class="pill gold">${esc(rankLabel(baseMMR(p)))}</span><div style="display:flex;gap:5px"><button class="secondary" data-edit="${p.id}" style="padding:6px 9px">編集</button><button class="danger" data-del="${p.id}" style="padding:6px 9px">削除</button></div></div>`).join(""):'<div class="empty">まだプレイヤーが登録されていません。</div>';
+ document.querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>editPlayer(b.dataset.edit));
+ document.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{if(confirm("このプレイヤーを削除しますか？")){players=players.filter(p=>p.id!==b.dataset.del);save()}});
+}
+$("playerForm").onsubmit=e=>{e.preventDefault();const selected=[...document.querySelectorAll("#mainRoles input:checked")].map(x=>x.value);if(!selected.length){toast("得意ロールを1つ以上選択してください");return}
+ const id=$("editId").value;const old=players.find(x=>x.id===id);const p={id:id||crypto.randomUUID(),name:$("name").value.trim(),riotId:$("riotId").value.trim(),rank:$("rank").value,division:$("division").value,mainRoles:selected,preferred:$("preferred").value,roleStats:readStats()};
+ if(!p.name)return;if(id){players=players.map(x=>x.id===id?p:x);toast("プレイヤー情報を更新しました")}else{if(players.length>=10){toast("登録できるのは10人までです");return}players.push(p);toast("プレイヤーを追加しました")}formReset();save()};
+function editPlayer(id){const p=players.find(x=>x.id===id);if(!p)return;$("editId").value=id;$("name").value=p.name;$("riotId").value=p.riotId||"";$("rank").value=p.rank;$("division").value=p.division;$("preferred").value=p.preferred;document.querySelectorAll("#mainRoles input").forEach(x=>x.checked=(p.mainRoles||[]).includes(x.value));setStats(p.roleStats||{});$("saveBtn").textContent="変更を保存";window.scrollTo({top:0,behavior:"smooth"})}
+$("cancelEdit").onclick=formReset;
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));$("playersTab").classList.toggle("hidden",b.dataset.tab!=="players");$("builderTab").classList.toggle("hidden",b.dataset.tab!=="builder")});
+function roleFit(p,r){let s=(p.mainRoles||[]).includes(r)?10:0;if(p.preferred===r)s+=Number($("mode").value==="role"?9:5);if(p.preferred==="FILL")s+=3;if(roleHasData(p,r))s+=(p.roleStats[r].proficiency-3)*2;return s}
+function permutations(arr){if(arr.length<=1)return [arr];let out=[];arr.forEach((v,i)=>permutations(arr.filter((_,j)=>j!==i)).forEach(rest=>out.push([v,...rest])));return out}
+function assignRoles(team){let best=null,bestScore=-Infinity;for(const perm of permutations(ROLES)){let score=perm.reduce((a,r,i)=>a+roleFit(team[i],r),0);if(score>bestScore){bestScore=score;best=perm}}return team.map((p,i)=>({...p,assigned:best[i]}))}
+function pop(n){let c=0;while(n){c+=n&1;n>>=1}return c}
+function generate(){
+ if(players.length!==10){toast("チーム編成には10人の登録が必要です");return}
+ let best=null,bestCost=Infinity;const mode=$("mode").value;
+ for(let mask=0;mask<1024;mask++){if(!(mask&1)||pop(mask)!==5)continue;let a=players.filter((_,i)=>mask>>i&1),b=players.filter((_,i)=>!(mask>>i&1));const aa=assignRoles(a),bb=assignRoles(b);
+ const rateA=aa.reduce((s,p)=>s+roleMMR(p,p.assigned),0),rateB=bb.reduce((s,p)=>s+roleMMR(p,p.assigned),0);
+ const roleA=aa.reduce((s,p)=>s+roleFit(p,p.assigned),0),roleB=bb.reduce((s,p)=>s+roleFit(p,p.assigned),0);
+ // Compare both total strength and lane-vs-lane differences.
+ const laneDiff=ROLES.reduce((sum,r)=>{let x=aa.find(p=>p.assigned===r),y=bb.find(p=>p.assigned===r);return sum+Math.abs(roleMMR(x,r)-roleMMR(y,r))},0);
+ const totalDiff=Math.abs(rateA-rateB);
+ const rolePenalty=(50-roleA)+(50-roleB);
+ const cost=totalDiff*(mode==="rank"?1.2:mode==="role"?0.55:0.85)+laneDiff*(mode==="rank"?0.35:mode==="role"?0.8:0.65)+rolePenalty*(mode==="rank"?.12:mode==="role"?1.5:.75)+Math.random()*.03;
+ if(cost<bestCost){bestCost=cost;best={a:aa,b:bb,rateA,rateB,laneDiff,totalDiff,roleA,roleB}}
+ }
+ result=best;runs++;localStorage.setItem("customgg_runs",runs);renderTeams();render();
+}
+function renderTeams(){
+ if(!result)return;
+ const side=(team,color,rate)=>`<div class="team ${color}"><div class="teamhead"><span>${color==="blue"?"BLUE TEAM":"RED TEAM"}</span><span>${rate} MMR</span></div><div class="teambody">${team.map(p=>`<div class="slot"><span class="slotrole">${p.assigned}</span><div><div class="slotname">${esc(p.name)}</div><div class="pmeta">予想 ${rankLabel(roleMMR(p,p.assigned))} · 内部 ${roleMMR(p,p.assigned)} · 練度 ${proficiencyLabel(p.roleStats?.[p.assigned]?.proficiency||3)}</div></div><select data-team="${color}" data-player="${p.id}">${ROLES.map(r=>`<option ${p.assigned===r?"selected":""}>${r}</option>`).join("")}</select></div>`).join("")}</div><div class="score"><span>チーム平均内部レート</span><strong>${Math.round(rate/5)}</strong></div></div>`;
+ $("teams").innerHTML=side(result.a,"blue",result.rateA)+side(result.b,"red",result.rateB);
+ const diff=Math.abs(result.rateA-result.rateB),total=result.rateA+result.rateB,percent=total?Math.max(0,100-diff/total*100):100;
+ const laneRows=ROLES.map(r=>{let a=result.a.find(p=>p.assigned===r),b=result.b.find(p=>p.assigned===r);return `<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--line);font-size:12px"><span>${r}</span><span>${rankLabel(roleMMR(a,r))} (${roleMMR(a,r)})</span><span>${rankLabel(roleMMR(b,r))} (${roleMMR(b,r)})</span><strong>差 ${Math.abs(roleMMR(a,r)-roleMMR(b,r))}</strong></div>`}).join("");
+ $("comparison").classList.remove("hidden");$("comparison").innerHTML=`<strong>チームバランス</strong><div class="bar"><span style="width:${percent}%"></span></div><div style="display:flex;justify-content:space-between;color:var(--muted);font-size:12px"><span>合計レート差：${diff} MMR</span><span>バランス指標：${percent.toFixed(1)}%</span></div><h3 style="font-size:13px;margin:14px 0 4px">ロール別対面比較</h3>${laneRows}`;
+ document.querySelectorAll("[data-team][data-player]").forEach(sel=>sel.onchange=()=>{let t=result[sel.dataset.team==="blue"?"a":"b"];let other=result[sel.dataset.team==="blue"?"b":"a"];let p=t.find(x=>x.id===sel.dataset.player);let old=p.assigned;let target=t.find(x=>x.assigned===sel.value);if(target){target.assigned=old}p.assigned=sel.value;renderTeams()});
+}
+$("generate").onclick=generate;$("reshuffle").onclick=generate;
+function resultText(){if(!result)return "";return ["CUSTOM.GG TEAM RESULT","BLUE TEAM",...result.a.map(p=>`${p.assigned}: ${p.name} (${rankLabel(roleMMR(p,p.assigned))} / ${roleMMR(p,p.assigned)} MMR)`),"","RED TEAM",...result.b.map(p=>`${p.assigned}: ${p.name} (${rankLabel(roleMMR(p,p.assigned))} / ${roleMMR(p,p.assigned)} MMR)`)].join("\n")}
+$("copyResult").onclick=()=>{if(!result){toast("先にチームを編成してください");return}navigator.clipboard.writeText(resultText()).then(()=>toast("編成結果をコピーしました")).catch(()=>toast("コピーできませんでした"))};
+$("saveResult").onclick=()=>{if(!result){toast("先にチームを編成してください");return}history.unshift({date:new Date().toLocaleString("ja-JP"),text:resultText()});localStorage.setItem("customgg_history",JSON.stringify(history));toast("編成履歴を保存しました")};
+$("resetDemo").onclick=()=>{if(players.length&&!confirm("現在の登録をサンプルデータに置き換えますか？"))return;const names=["Aster","Blitz","Clover","Dusk","Echo","Frost","Gale","Hawk","Iris","Jinx"];const ranks=["diamond","gold","platinum","emerald","silver","diamond","gold","platinum","emerald","silver"];players=names.map((name,i)=>({id:crypto.randomUUID(),name,riotId:name+"#JP1",rank:ranks[i],division:["II","I","III","IV","II","III","II","I","IV","I"][i],mainRoles:[["MID","ADC"],["JUNGLE","TOP"],["ADC","SUPPORT"],["TOP","MID"],["SUPPORT","JUNGLE"],["MID","TOP"],["JUNGLE","SUPPORT"],["TOP","JUNGLE"],["ADC","MID"],["SUPPORT","ADC"]][i],preferred:["MID","JUNGLE","ADC","TOP","SUPPORT","MID","JUNGLE","TOP","ADC","SUPPORT"][i],roleStats:Object.fromEntries(ROLES.map((r,j)=>[r,{games:[32,25,18,12,8][(i+j)%5],win:45+((i*7+j*5)%18),kda:2+((i+j)%6)*.45,cs:4+((i*2+j)%6)*.6,vision:12+((i*9+j*7)%55),proficiency:1+((i+j)%5)}]))}));save();result=null;$("teams").innerHTML='<div class="empty" style="grid-column:1/-1">チーム編成タブから自動編成できます。</div>';$("comparison").classList.add("hidden");toast("成績入りサンプル10人を登録しました")};
+rolesUI();setStats();render();
+</script>
+</body></html>
